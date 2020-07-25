@@ -21,7 +21,7 @@ http.createServer((request, response) => {
 
       const responseBody = { headers, method, url, body };
 
-      response.write(JSON.stringify(responseBody));
+      response.write(`<div class="hello-world">hello world</div>`);
       response.end();
   });
 }).listen(8080);
