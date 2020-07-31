@@ -1,7 +1,11 @@
 const http = require('http');
 
 http.createServer((request, response) => {
-  const { headers, method, url } = request;
+  const {
+    headers,
+    method,
+    url
+  } = request;
   let body = [];
   request
     .on('error', (err) => {
@@ -18,12 +22,11 @@ http.createServer((request, response) => {
 
       response.statusCode = 200;
       response.setHeader('Content-Type', 'application/json');
-
-      const responseBody = { headers, method, url, body };
-
-      response.write(`<div class="hello-world">hello world</div>`);
+      const name = body.split('=')[1]
+      response.write(
+`<html><head><style>body div {color: blue;}body .hello-world {color: red;}</style></head><body><div class="hello-world">hello world</div></body></html>`);
       response.end();
-  });
+    });
 }).listen(8080);
 
 console.log('server started');

@@ -35,11 +35,13 @@ class Request {
           host: this.host,
           port: this.port
         }, () => {
-          connection.write(this.toString())
+          const thisToString = this.toString()
+          connection.write(thisToString)
         })
       }
       connection.on('data', (data) => {
-        parser.receive(data.toString())
+        const dataToString = data.toString()
+        parser.receive(dataToString)
         if (parser.isFinished) {
           resolve(parser.response)
           connection.end()
@@ -52,10 +54,7 @@ class Request {
     })
   }
   toString() {
-    return `${this.method} ${this.path} HTTP/1.1\r
-${Object.keys(this.headers).map(key => `${key}: ${this.headers[key]}`).join('\r\n')}\r
-\r
-${this.bodyText}`
+    return `${this.method} ${this.path} HTTP/1.1\r\n${Object.keys(this.headers).map(key => `${key}: ${this.headers[key]}`).join('\r\n')}\r\n\r\n${this.bodyText}`
   }
 }
 
