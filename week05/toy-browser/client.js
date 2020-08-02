@@ -1,5 +1,7 @@
 const net = require('net')
+const images = require('images')
 const parser = require('./parser.js')
+const render = require('./render.js')
 // 请求类
 class Request {
   constructor(options) {
@@ -247,4 +249,8 @@ void async function () {
   console.log({response})
   let dom = parser.parseHTML(response.body)
   console.log({dom})
+  // console.log(JSON.stringify(dom,null, "    "))
+  const viewport = images(800, 600)
+  render(viewport, dom);
+  viewport.save("viewport.jpg")
 }()
