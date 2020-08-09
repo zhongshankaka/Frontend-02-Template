@@ -42,24 +42,34 @@ first-line 宽度不固定，且已占据整行行宽。
     ### animation属性    
     animation-delay
     设置延时，即从元素加载完成之后到动画序列开始执行的这段时间。
+    
     animation-direction = normal | reverse | alternate | alternate-reverse
     设置动画在每次运行完后是反向运行还是重新回到开始位置重复运行。
+    
     animation-duration
     设置动画一个周期的时长。
+    
     animation-iteration-count
     设置动画重复次数， 可以指定infinite无限次重复动画
+    
     animation-name
     指定由@keyframes描述的关键帧名称。
+    
     animation-play-state = running | paused
     允许暂停和恢复动画。
+    
     animation-timing-function = linear | ease | ease-in ...
     设置动画速度， 即通过建立加速度曲线，设置动画在关键帧之间是如何变化。
-    animation-fill-mode
-        - none: delay and finished 都是元素默认状态
-        - forwards: finished 为最后一帧状态
-        - backwards: delay 为第一帧状态
-        - both: delay 为第一帧状态，finished 为最后一帧状态
-    指定动画执行前后如何为目标元素应用样式。
+    
+    animation-fill-mode 指定动画执行前后如何为目标元素应用样式。
+
+    - none: delay and finished 都是元素默认状态
+    
+    - forwards: finished 为最后一帧状态
+    
+    - backwards: delay 为第一帧状态
+
+    - both: delay 为第一帧状态，finished 为最后一帧状态
 
 - @fontface :https://www.w3.org/TR/css-fonts-3/
     ```css
