@@ -90,10 +90,8 @@ first-line 宽度不固定，且已占据整行行宽。
        - \. 
        - \# 
        - \: 
-       
-             \:any-link 
-             代表一个有链接锚点的元素，而不管它是否被访问过，也就是说，它会匹配每一个有 href 属性的 \<a\>、\<area\> 或 \<link\> 元素。因此，它会匹配到所有的 \:link 或 \:visited
-    
+             \:any-link 代表一个有链接锚点的元素，而不管它是否被访问过，也就是说，它会匹配每一个有 href 属性的 \<a\>、\<area\> 或 \<link\> 元素。因此，它会匹配到所有的 \:link 或 \:visited
+        
             \:link \:visited 
             
             \:hover
@@ -103,6 +101,7 @@ first-line 宽度不固定，且已占据整行行宽。
             \:focus
             
             \:target
+            
             
             ```html
             代表一个唯一的页面元素(目标元素)，其id 与当前URL片段匹配
@@ -152,30 +151,37 @@ first-line 宽度不固定，且已占据整行行宽。
             ```
             
        - \:\:
-        \:\:before
-        \:\:after
-        \:\:first-line 伪元素只能在块容器中
-        \:\:first-letter
+       
+            \:\:before
+            
+            \:\:after
+            
+            \:\:first-line 伪元素只能在块容器中
+            
+            \:\:first-letter
+        
        - \:not
+       
        - [att\=val]
        
-    ### 选择器优先级
-    ```html
-    // 优先级匹配
-    // 优先级高的先比较，匹配较高优先级的规则
-    // 如下当有id = #id 的元素同时被下面两条规则匹配，则优先匹配到第二条，因为class优先级比tag高
-    // 1.div div #id
-    // [0,    1, 0,    2]
-    // 2.div .cls #id
-    // [0,    1, 1,    1]
-    // inline id class tag
-    S1 = 0 * N^3+ 1 * N^2+ 0 * N^1+ 2
-    S2 = 0 * N^3+ 1 * N^2+ 1 * N^1+ 1
-    取 N = 1000000
-    S1 = 1000000000002
-    S2 = 1000001000001
-    S2 > S1
-    ```
+        ### 选择器优先级
+        ```html
+        // 优先级匹配
+        // 优先级高的先比较，匹配较高优先级的规则
+        // 如下当有id = #id 的元素同时被下面两条规则匹配，则优先匹配到第二条，因为class优先级比tag高
+        // 1.div div #id
+        // [0,    1, 0,    2]
+        // 2.div .cls #id
+        // [0,    1, 1,    1]
+        // inline id class tag
+        S1 = 0 * N^3+ 1 * N^2+ 0 * N^1+ 2
+        S2 = 0 * N^3+ 1 * N^2+ 1 * N^1+ 1
+        取 N = 1000000
+        S1 = 1000000000002
+        S2 = 1000001000001
+        S2 > S1
+        ```
+    
 - Key
     - Properties
     - Variables: https://www.w3.org/TR/css-variables/
