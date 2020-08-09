@@ -90,14 +90,19 @@ first-line 宽度不固定，且已占据整行行宽。
        - \. 
        - \# 
        - \: 
-         \:any-link 
-         代表一个有链接锚点的元素，而不管它是否被访问过，也就是说，它会匹配每一个有 href 属性的 \<a\>、\<area\> 或 \<link\> 元素。因此，它会匹配到所有的 \:link 或 \:visited
-
-        \:link \:visited 
-        \:hover
-        \:active
-        \:focus
-        \:target
+       
+             \:any-link 
+             代表一个有链接锚点的元素，而不管它是否被访问过，也就是说，它会匹配每一个有 href 属性的 \<a\>、\<area\> 或 \<link\> 元素。因此，它会匹配到所有的 \:link 或 \:visited
+    
+            \:link \:visited 
+            
+            \:hover
+            
+            \:active
+            
+            \:focus
+            
+            \:target
             
             ```html
             代表一个唯一的页面元素(目标元素)，其id 与当前URL片段匹配
