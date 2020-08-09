@@ -1,5 +1,11 @@
 # week06 学习笔记
 
+## 思考题
+为什么 first-letter 可以设置 float 之类的，而 first-line 不行呢？
+
+first-letter 宽度固定，可设置float。
+first-line 宽度不固定，且已占据整行行宽。
+ 
 ## at-rules
 
 - @charset : https://www.w3.org/TR/css-syntax-3/
