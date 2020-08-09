@@ -90,33 +90,35 @@ first-line 宽度不固定，且已占据整行行宽。
        6. *
        7. . 
        8. # 
-       9. : 
-       链接/行为 
-            • :any-link 
+       9. : 链接/行为 
+       
+            - :any-link 
             
             ```html
             代表一个有链接锚点的元素，而不管它是否被访问过，也就是说，它会匹配每一个有 href 属性的 <a>、<area> 或 <link> 元素。因此，它会匹配到所有的 :link 或 :visited
             ```
+
+
+            - :link :visited 
+            - :hover
+            - :active
+            - :focus
+            - :target
             
-            • :link :visited 
-            • :hover
-            • :active
-            • :focus
-            • :target
             ```html
             代表一个唯一的页面元素(目标元素)，其id 与当前URL片段匹配
     
             如：http://www.example.com/index.html#section2
-            若当前URL等于上面的URL，下面的元素可以通过 :target选择器被选中：
+            若当前URL等于上面的URL，下面的元素可以通过 :target选择器被选中： 
             <style>
             :target {
               border: 2px solid black;
             }
             </style>
             <section id="section2">Example</section>
-            ```
+        
             
-            ```html
+
             <style>
             p:target {
               background-color: gold;
@@ -150,10 +152,10 @@ first-line 宽度不固定，且已占据整行行宽。
               from the links above. Isn't that delightful?</p>
             ```
        10. ::
-        • ::before
-        • ::after
-        • ::first-line 伪元素只能在块容器中
-        • ::first-letter
+            - ::before
+            - ::after
+            - ::first-line 伪元素只能在块容器中
+            - ::first-letter
        11. :not
        12. [att=val]
        
