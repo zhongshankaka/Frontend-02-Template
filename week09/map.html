@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map</title>
+  <style>
+    .cell {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: gray;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      vertical-align: middle;
+    }
+
+    #container {
+      width: 700px;
+      line-height: 1px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='container'></div>
+  <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
+  <script>
+    const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
+
+    class Heap {
+      constructor(data, compare) {
+        this.data = data.slice();
+        this.compare = compare || ((a, b) => a - b);
+      }
+
+      get length() {
+        return this.data.length;
+      }
+
+      insert(v) {
+        const { data, compare } = this;
+        data.push(v);
+        let idx = data.length - 1;
+        while (idx) {
+          let parent = Math.floor((idx - 1) / 2);
+          if (!compare(data[idx], data[parent])) {
+            return;
+          }
+          swap(data, idx, parent);
+          idx = parent;
+        }
+      }
+
+      extract() {
+        const { data, compare } = this;
+        if (!data.length) {
+          return null;
+        }
+        swap(data, 0, data.length - 1);
+        const res = data.pop();
+        const len = data.length;
+        let index = 0;
+        let exchange = index * 2 + 1;
+        while (exchange < len) {
+          let right = index * 2 + 2;
+          if (right < len && compare(data[right], data[exchange])) {
+            exchange = right;
+          }
+          if (!compare(data[exchange], data[index])) {
+            break;
+          }
+          swap(data, exchange, index);
+          index = exchange;
+          exchange = index * 2 + 1;
+        }
+
+        return res;
+
+      }
+
+      top() {
+        if (this.data.length) return this.data[0];
+        return null;
+      }
+    }
+
+    class Sorted {
+      constructor(data, compare) {
+        this.data = data.slice();
+        this.compare = compare || ((a, b) => a - b);
+      }
+
+      get length() {
+        return this.data.length;
+      }
+
+      take() {
+        if (!this.data.length) {
+          return;
+        }
+        let min = this.data[0];
+        let minIndex = 0;
+
+        for (let i = 0; i < this.data.length; i++) {
+          if (this.compare(this.data[i], min) < 0) {
+            min = this.data[i];
+            minIndex = i;
+          }
+        }
+        this.data[minIndex] = this.data[this.data.length - 1];
+        this.data.pop();
+        return min;
+      }
+
+      give(v) {
+        this.data.push(v);
+      }
+    }
+    let map = localStorage['map'] ? JSON.parse(localStorage['map']) : Array(10000).fill(0);
+
+    let container = document.getElementById('container');
+
+    for (let y = 0; y < 100; y++) {
+      for (let x = 0; x < 100; x++) {
+        let cell = document.createElement('div');
+        cell.classList.add('cell');
+
+        if (map[100 * y + x] === 1) {
+          cell.style.background = 'black';
+        }
+        cell.addEventListener('mousemove', () => {
+          if (mouseDown) {
+            if (clear) {
+              cell.style.backgroundColor = '';
+              map[100 * y + x] = 0;
+            } else {
+              cell.style.backgroundColor = 'black';
+              map[100 * y + x] = 1;
+            }
+          }
+        });
+        container.appendChild(cell);
+      }
+    }
+
+    let mouseDown = false;
+
+    let clear = false;
+
+    document.addEventListener('mousedown', e => {
+      mouseDown = true;
+      clear = (e.which === 3);
+    })
+
+    document.addEventListener('mouseup', () => mouseDown = false);
+
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    async function findPath(map, start, end) {
+      let table = Object.create(map);
+      let queue = new Heap([start], (a, b) => distance(a) < distance(b));
+      async function insert(x, y, pre) {
+        if (x < 0 || x >= 100 || y < 0 || y >= 100) {
+          return;
+        }
+        if (table[y * 100 + x]) {
+          return;
+        }
+        await sleep(5);
+        container.children[y * 100 + x].style.background = 'lightgreen';
+        table[y * 100 + x] = pre;
+        queue.insert([x, y]);
+      }
+      function distance(point) {
+        return (point[0] - end[0]) ** 2 + (point[1] - end[1]) ** 2;
+      }
+
+      while (queue.length) {
+        let [x, y] = queue.extract();
+        if (x === end[0] && y === end[1]) {
+          let path = [];
+          while (x != start[0] || y != start[1]) {
+            path.push(map[y * 100 + x]);
+            [x, y] = table[y * 100 + x];
+            container.children[y * 100 + x].style.background = 'purple';
+          }
+          return path;
+        }
+        await insert(x - 1, y, [x, y]);
+        await insert(x, y - 1, [x, y]);
+        await insert(x + 1, y, [x, y]);
+        await insert(x, y + 1, [x, y]);
+
+        await insert(x - 1, y - 1, [x, y]);
+        await insert(x + 1, y - 1, [x, y]);
+        await insert(x - 1, y + 1, [x, y]);
+        await insert(x + 1, y + 1, [x, y]);
+      }
+    }
+
+
+    async function path(map, start, end) {
+      let queue = [start];
+
+      async function insert(x, y) {
+        if (x < 0 || x > 100 || y < 0 || y >= 100) {
+          return;
+        }
+        if (map[y * 100 + x]) {
+          return;
+        }
+        await sleep(20);
+        container.children[y * 100 + x].style.background = 'lightgreen';
+        map[y * 100 + x] = 2;
+        queue.push([x, y]);
+      }
+
+      while (queue.length) {
+        let [x, y] = queue.shift();
+        if (x === end[0] && y === end[1]) {
+          return true;
+        }
+        await insert(x - 1, y);
+        await insert(x, y - 1);
+        await insert(x + 1, y);
+        await insert(x, y + 1);
+      }
+    }
+
+    function sleep(duration) {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, duration);
+      })
+    }
+    // findPath(map, [0, 0], [50, 50])
+
+  </script>
+</body>
+
+</html>
